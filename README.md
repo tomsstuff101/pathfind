@@ -22,7 +22,7 @@ then `pathfind(A, P, Q)` should return `6`.
 
 1. Clone/Fork this repo
 2. Implement the `pathfind` function in `src/pathfind.ts`
-3. Feel free to add further test cases to `tests/pathfind.test.js`
+3. Feel free to add further test cases to `tests/pathfind.test.ts`
 
 ## Running the tests
 
