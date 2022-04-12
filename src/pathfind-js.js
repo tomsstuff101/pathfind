@@ -23,14 +23,9 @@ const pathfind = (A, P, Q) => {
     arrayGHF.push(row);
   }
 
-  //   console.log("arrayGHF");
-  //   console.table(arrayGHF);
-
   let openList = []; // cells being considered
   let closedList = []; // GH and F calculated
   let nextList = []; // the next cells to be considered
-
-  //let validState = true;
 
   const initOpenList = (cell) => {
     let north = { x: cell.x, y: cell.y - 1 };
@@ -39,9 +34,6 @@ const pathfind = (A, P, Q) => {
     let west = { x: cell.x - 1, y: cell.y };
 
     let initOpenDirections = [north, east, south, west];
-
-    // console.log("init open list directions --> ");
-    // console.log(initOpenDirections);
 
     initOpenDirections.forEach((direction) => {
       //   console.log(`A direction -->  x ${direction.x}   y ${direction.y} `);
@@ -56,22 +48,14 @@ const pathfind = (A, P, Q) => {
         }
       }
     });
-
-    // console.log("Open List -->");
-    // console.log(openList);
   };
 
   const findNextCells = () => {
     // Find list of valid vectors for nextList
-    // open cells pushes to next list.
-    //
-    //
+
     // test each openList vector N,E,S and W (no diagonals)
     // ignore if wall or if out of bounds
     // otherwise add its vector to the nextList
-
-    // console.log("openList at findNextCells == ");
-    // console.log(openList);
 
     openList.forEach((cell) => {
       let north = { x: cell.x, y: cell.y - 1 };
@@ -121,21 +105,24 @@ const pathfind = (A, P, Q) => {
     });
   };
 
-  const findGHFforAllOpenCells = () => {
+  const calcH = (x, y) => {
+    return Math.abs(Q.x - x) + Math.abs(Q.y - y);
+  };
+
+  const findGHFforAllOpenCells = (g) => {
     /**
      * Find G,H & F for each on openList. Put these values in cellGHFArray
      *
      */
+
+    openList.forEach((cell) => {
+      let h = calcH(cell.x, cell.y);
+
+      let f = g + h;
+
+      arrayGHF[cell.y][cell.x] = { G: g, H: h, F: f };
+    });
   };
-
-  //   const qNotFound = () => {
-  //     let notFound = true;
-
-  //     // test if the path has been found
-  //     // closedList contains Q cordinates and notFound = false
-
-  //     return notFound;
-  //   };
 
   /******
    * Initialse the search
@@ -143,34 +130,66 @@ const pathfind = (A, P, Q) => {
   closedList.push(P);
   initOpenList(P);
 
-  //   console.log("open List at init");
-  //   console.log(openList);
-
-  //   while (qNotFound() && validSate) {
-
   //Check P and Q not already togeether at start
   if (P.x !== Q.x || P.y !== Q.y) {
+    let g = 1;
     do {
       //Calculate G, H & F for all valid cells starting at P,
       // working outwards untill Q is found or its impossible ie no path
-      //   findGHFforAllOpenCells();
+
+      findGHFforAllOpenCells(g);
       nextList = [];
       findNextCells();
       closedList = [...closedList, ...openList];
-      console.log("closedList----");
-      console.log(closedList);
       openList = [...nextList];
+      g++;
 
-      console.log("openList----");
-      console.log(openList);
-      console.log("nextList---");
       console.log(nextList);
     } while (openList.length !== 0);
 
     //find minimum steps
+
+    console.log(arrayGHF);
+
     const stepsToQ = () => {
       // find lowest G for each valid cell in cellGHFArray for position Q
-      lowestG = 88;
+      let north = { x: Q.x, y: Q.y - 1 };
+      let east = { x: Q.x + 1, y: Q.y };
+      let south = { x: Q.x, y: Q.y + 1 };
+      let west = { x: Q.x - 1, y: Q.y };
+
+      let checkG = [north, east, south, west];
+
+      console.log("north");
+      console.log(arrayGHF[north.y][north.x].G);
+      console.log(arrayGHF[north.y][north.x].H);
+      console.log(arrayGHF[north.y][north.x].F);
+
+      console.log("east");
+      console.log(arrayGHF[east.y][east.x].G);
+      console.log(arrayGHF[east.y][east.x].H);
+      console.log(arrayGHF[east.y][east.x].F);
+
+      console.log("south");
+      console.log(arrayGHF[south.y][south.x].G);
+      console.log(arrayGHF[south.y][south.x].H);
+      console.log(arrayGHF[south.y][south.x].F);
+
+      console.log("west");
+      console.log(arrayGHF[west.y][west.x].G);
+      console.log(arrayGHF[west.y][west.x].H);
+      console.log(arrayGHF[west.y][west.x].F);
+
+      //   let isBlockedCheck = checkG.reduce((total, num) => {
+      //     return total + num;
+      //   });
+      //   if (isBlockedCheck === -4) {
+      //     lowestG = -1; // all paths blocked; not possible
+      //   } else {
+      //     lowestG = Math.min(...checkG);
+      //   }
+
+      lowestG = 99;
       console.log("lowest G ", lowestG);
       return lowestG;
     };
@@ -193,6 +212,6 @@ const A = [
   [true, true, true, true, true],
 ];
 const P = { x: 1, y: 0 };
-const Q = { x: 3, y: 3 };
+const Q = { x: 2, y: 3 };
 
 pathfind(A, P, Q);
