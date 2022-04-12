@@ -130,6 +130,10 @@ const pathfind = (A, P, Q) => {
   closedList.push(P);
   initOpenList(P);
 
+  /********************************
+   * Main loop
+   ********************************/
+
   //Check P and Q not already togeether at start
   if (P.x !== Q.x || P.y !== Q.y) {
     let g = 1;
@@ -160,50 +164,41 @@ const pathfind = (A, P, Q) => {
 
       let checkG = [north, east, south, west];
 
-      console.log("north");
-      console.log(arrayGHF[north.y][north.x].G);
-      console.log(arrayGHF[north.y][north.x].H);
-      console.log(arrayGHF[north.y][north.x].F);
+      let realpaths = [];
 
-      console.log("east");
-      console.log(arrayGHF[east.y][east.x].G);
-      console.log(arrayGHF[east.y][east.x].H);
-      console.log(arrayGHF[east.y][east.x].F);
+      checkG.forEach((potentialPathToQ) => {
+        // check its valid
 
-      console.log("south");
-      console.log(arrayGHF[south.y][south.x].G);
-      console.log(arrayGHF[south.y][south.x].H);
-      console.log(arrayGHF[south.y][south.x].F);
+        if (potentialPathToQ.x >= 0 && potentialPathToQ.x < A.length) {
+          if (potentialPathToQ.y >= 0 && potentialPathToQ.y < A.length) {
+            if (potentialPathToQ !== -1) {
+              realpaths.push(
+                arrayGHF[potentialPathToQ.y][potentialPathToQ.x].G
+              );
+            }
+          }
+        }
+      });
 
-      console.log("west");
-      console.log(arrayGHF[west.y][west.x].G);
-      console.log(arrayGHF[west.y][west.x].H);
-      console.log(arrayGHF[west.y][west.x].F);
+      let lowestG = -1; // defult to no path found
 
-      //   let isBlockedCheck = checkG.reduce((total, num) => {
-      //     return total + num;
-      //   });
-      //   if (isBlockedCheck === -4) {
-      //     lowestG = -1; // all paths blocked; not possible
-      //   } else {
-      //     lowestG = Math.min(...checkG);
-      //   }
+      if (realpaths.length !== 0) {
+        lowestG = Math.min(...realpaths);
+      }
 
-      lowestG = 99;
-      console.log("lowest G ", lowestG);
-      return lowestG;
+      console.log("lowest number of steps = ", lowestG + 1);
+
+      return lowestG + 1; // as counted from 0
     };
 
     return stepsToQ();
   } else {
     console.log("P and Q same");
+    console.log("lowest number of steps = 0");
     return 0;
   }
-
-  //return -1;
 };
-// [true, false, false, false, false],
-//[true, true, true, true, true],
+
 const A = [
   [true, true, true, true, true],
   [true, false, false, false, true],
@@ -211,7 +206,7 @@ const A = [
   [true, true, true, true, true],
   [true, true, true, true, true],
 ];
-const P = { x: 1, y: 0 };
-const Q = { x: 2, y: 3 };
+const P = { x: 0, y: 0 };
+const Q = { x: 0, y: 0 };
 
 pathfind(A, P, Q);
