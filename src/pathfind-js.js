@@ -183,12 +183,12 @@ const pathfind = (A, P, Q) => {
       let lowestG = -1; // defult to no path found
 
       if (realpaths.length !== 0) {
-        lowestG = Math.min(...realpaths);
+        lowestG = Math.min(...realpaths) + 1; // as counted from 0
       }
 
       console.log("lowest number of steps = ", lowestG + 1);
 
-      return lowestG + 1; // as counted from 0
+      return lowestG;
     };
 
     return stepsToQ();
