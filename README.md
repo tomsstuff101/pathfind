@@ -33,5 +33,14 @@ Tests have been implemented using Jest and can be run by running `yarn test`.
 Please fill in the sections below after you complete the challenge.
 
 ### What I'm Pleased With
+Enjoyed tackling the problem and improving my coding.
+A different type of challange than Im used to for sure!
 
 ### What I Would Have Done With More Time
+TypeScript ! : I can read it and make sense of it but Im not quite there writing in it
+Jest testing in TS: As Ive done in TS this isnt working. Gone for simpler solution of adding a call with prefixed test inside the pathfine-js script
+Path: Store the parent vectors in the valid next cells to find paths
+Options: Chose fatstes path find solution, rther than minim path by only adding lowest F score from open to closed list
+Larger gird: Breakdown a large grid (eg 1x10^6 x 1x10^6) into chunks with intermediate P' -> Q' for each chunk
+Convert Open data via an api into a grid. Might be able to get a more reall world
+
