@@ -134,6 +134,15 @@ const pathfind = (A, P, Q) => {
    * Main loop
    ********************************/
 
+  // const isQinClosedList = ()=>{
+  //   let isQInList = closedList.filter(vector =>{
+  //     return (vector.x === Q.x  && vector.y === Q.y)
+  //   })
+  //   isQInList.length !== 0
+  //   ? true
+  //   : false
+  // }
+
   //Check P and Q not already togeether at start
   if (P.x !== Q.x || P.y !== Q.y) {
     let g = 1;
@@ -150,6 +159,7 @@ const pathfind = (A, P, Q) => {
 
       console.log(nextList);
     } while (openList.length !== 0);
+    //} while (isQinClosedList)
 
     //find minimum steps
 
@@ -182,11 +192,22 @@ const pathfind = (A, P, Q) => {
 
       let lowestG = -1; // defult to no path found
 
+      console.log("realpaths");
+      console.log(realpaths);
+
       if (realpaths.length !== 0) {
-        lowestG = Math.min(...realpaths) + 1; // as counted from 0
+        let lowestGandNoWalls = realpaths.filter((path) => {
+          return path !== -1;
+        });
+        console.log("lowestGandNoWalls");
+        console.log(lowestGandNoWalls);
+
+        if (lowestGandNoWalls.length !== 0) {
+          lowestG = Math.min(...lowestGandNoWalls) + 1; // as counted from 0
+        }
       }
 
-      console.log("lowest number of steps = ", lowestG + 1);
+      console.log("lowest number of steps = ", lowestG);
 
       return lowestG;
     };
@@ -203,10 +224,10 @@ const A = [
   [true, true, true, true, true],
   [true, false, false, false, true],
   [true, true, true, true, true],
-  [true, true, true, true, true],
-  [true, true, true, true, true],
+  [true, true, true, false, false],
+  [true, true, true, false, true],
 ];
-const P = { x: 0, y: 0 };
-const Q = { x: 0, y: 0 };
+const P = { x: 1, y: 0 };
+const Q = { x: 1, y: 0 };
 
 pathfind(A, P, Q);
